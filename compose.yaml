@@ -1,0 +1,31 @@
+# Docker setup for the group project.
+#
+# Reuses the course's already-built image (robotics-fall2026:jazzy: Ubuntu 24.04,
+# ROS 2 Jazzy, Gazebo Harmonic, TurtleBot3, RViz). Nothing is rebuilt or reinstalled.
+# The project folder is mounted at /project inside the container.
+#
+# You normally don't run this directly: use run_simulation.ps1 or the .bat files.
+name: robotics-project
+
+services:
+  ros:
+    image: ${COURSE_ROS_IMAGE:-robotics-fall2026:jazzy}
+    # Write the project's shell setup, then start the course's noVNC desktop.
+    entrypoint: ["bash", "/project/scripts/container_start.sh"]
+    shm_size: 2gb
+    init: true
+    stdin_open: true
+    tty: true
+    environment:
+      COURSE_DESKTOP_SIZE: ${DESKTOP_SIZE:-1600x900x24}
+      TURTLEBOT3_MODEL: burger
+      ROS_DOMAIN_ID: "42"
+      LIBGL_ALWAYS_SOFTWARE: "1"
+    ports:
+      # Browser desktop (Gazebo/RViz windows). 6081 so it never clashes with the course's 6080.
+      - "127.0.0.1:6081:6080"
+    volumes:
+      - .:/project
+      # Makes http://localhost:6081 open the desktop directly instead of a file listing.
+      - ./scripts/novnc_index.html:/usr/share/novnc/index.html:ro
+    working_dir: /project
