@@ -34,8 +34,9 @@ def generate_launch_description():
     y_pose = LaunchConfiguration("y_pose")
 
     return LaunchDescription([
-        DeclareLaunchArgument("world", default_value=os.path.join(this_pkg, "worlds", "empty.sdf"),
-                              description="Gazebo world (.sdf) to load"),
+        DeclareLaunchArgument("world",
+            default_value="/project/ros2_ws/src/obstacle_bot/worlds/hallway.sdf",
+            description="Gazebo world (.sdf) to load",),
         DeclareLaunchArgument("gui", default_value="true", description="Open the Gazebo window"),
         DeclareLaunchArgument("rviz", default_value="false", description="Open RViz"),
         DeclareLaunchArgument("x_pose", default_value="0.0", description="Robot start x (m)"),

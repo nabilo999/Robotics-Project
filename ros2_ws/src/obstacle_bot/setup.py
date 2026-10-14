@@ -24,6 +24,7 @@ setup(
         "console_scripts": [
             "drive_demo = obstacle_bot.drive_demo:main",
             "sim_check = obstacle_bot.sim_check:main",
+            "obstacle_avoidance = obstacle_bot.obstacle_avoidance:main",
         ],
     },
 )

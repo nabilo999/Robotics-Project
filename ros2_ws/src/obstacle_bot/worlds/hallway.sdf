@@ -1,0 +1,717 @@
+
+<?xml version="1.0"?>
+<sdf version="1.9">
+  <world name="security_hallway">
+
+    <gravity>0 0 -9.8</gravity>
+
+    <physics name="physics" type="ode">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+
+    <!-- Gazebo systems -->
+    <plugin filename="gz-sim-physics-system"
+            name="gz::sim::systems::Physics"/>
+    <plugin filename="gz-sim-user-commands-system"
+            name="gz::sim::systems::UserCommands"/>
+    <plugin filename="gz-sim-scene-broadcaster-system"
+            name="gz::sim::systems::SceneBroadcaster"/>
+
+    <!-- Keep this plugin for LiDAR sensor data -->
+    <plugin filename="gz-sim-sensors-system"
+            name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+
+    <!-- ================================================= -->
+    <!-- FLOOR: 20 m x 6 m                                 -->
+    <!-- ================================================= -->
+    <model name="floor">
+      <static>true</static>
+      <pose>0 0 -0.05 0 0 0</pose>
+      <link name="floor_link">
+        <collision name="floor_collision">
+          <geometry>
+            <box><size>20 6 0.1</size></box>
+          </geometry>
+        </collision>
+        <visual name="floor_visual">
+          <geometry>
+            <box><size>20 6 0.1</size></box>
+          </geometry>
+          <material>
+            <ambient>0.28 0.31 0.35 1</ambient>
+            <diffuse>0.38 0.41 0.45 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- ================================================= -->
+    <!-- LEFT AND RIGHT WALLS                              -->
+    <!-- ================================================= -->
+    <model name="left_wall">
+      <static>true</static>
+      <pose>0 3 1.2 0 0 0</pose>
+      <link name="wall_link">
+        <collision name="collision">
+          <geometry>
+            <box><size>20 0.15 2.4</size></box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box><size>20 0.15 2.4</size></box>
+          </geometry>
+          <material>
+            <ambient>0.48 0.52 0.57 1</ambient>
+            <diffuse>0.65 0.69 0.74 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="right_wall">
+      <static>true</static>
+      <pose>0 -3 1.2 0 0 0</pose>
+      <link name="wall_link">
+        <collision name="collision">
+          <geometry>
+            <box><size>20 0.15 2.4</size></box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box><size>20 0.15 2.4</size></box>
+          </geometry>
+          <material>
+            <ambient>0.48 0.52 0.57 1</ambient>
+            <diffuse>0.65 0.69 0.74 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Blue accent strip on the left wall -->
+    <model name="blue_wall_accent">
+      <static>true</static>
+      <pose>0 2.91 1.75 0 0 0</pose>
+      <link name="accent_link">
+        <visual name="accent_visual">
+          <geometry>
+            <box><size>18 0.025 0.10</size></box>
+          </geometry>
+          <material>
+            <ambient>0.04 0.20 0.42 1</ambient>
+            <diffuse>0.08 0.35 0.68 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- ================================================= -->
+    <!-- OFFICE PARTITION: BLUE FRAME AND GLASS-STYLE PANEL -->
+    <!-- Located near the left wall, outside the center path -->
+    <!-- ================================================= -->
+    <model name="office_glass_partition">
+      <static>true</static>
+      <pose>-3.4 2.25 0.95 0 0 0</pose>
+      <link name="partition_link">
+
+        <!-- Glass panel -->
+        <collision name="glass_collision">
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <box><size>1.5 0.045 1.7</size></box>
+          </geometry>
+        </collision>
+        <visual name="glass_visual">
+          <geometry>
+            <box><size>1.5 0.045 1.7</size></box>
+          </geometry>
+          <transparency>0.45</transparency>
+          <material>
+            <ambient>0.45 0.65 0.78 1</ambient>
+            <diffuse>0.55 0.76 0.88 1</diffuse>
+          </material>
+        </visual>
+
+        <!-- Left blue frame -->
+        <collision name="frame_left_collision">
+          <pose>-0.76 0 0 0 0 0</pose>
+          <geometry>
+            <box><size>0.06 0.09 1.9</size></box>
+          </geometry>
+        </collision>
+        <visual name="frame_left_visual">
+          <pose>-0.76 0 0 0 0 0</pose>
+          <geometry>
+            <box><size>0.06 0.09 1.9</size></box>
+          </geometry>
+          <material>
+            <ambient>0.04 0.20 0.42 1</ambient>
+            <diffuse>0.08 0.35 0.68 1</diffuse>
+          </material>
+        </visual>
+
+        <!-- Right blue frame -->
+        <collision name="frame_right_collision">
+          <pose>0.76 0 0 0 0 0</pose>
+          <geometry>
+            <box><size>0.06 0.09 1.9</size></box>
+          </geometry>
+        </collision>
+        <visual name="frame_right_visual">
+          <pose>0.76 0 0 0 0 0</pose>
+          <geometry>
+            <box><size>0.06 0.09 1.9</size></box>
+          </geometry>
+          <material>
+            <ambient>0.04 0.20 0.42 1</ambient>
+            <diffuse>0.08 0.35 0.68 1</diffuse>
+          </material>
+        </visual>
+
+        <!-- Top frame -->
+        <visual name="frame_top_visual">
+          <pose>0 0 0.88 0 0 0</pose>
+          <geometry>
+            <box><size>1.58 0.09 0.06</size></box>
+          </geometry>
+          <material>
+            <ambient>0.04 0.20 0.42 1</ambient>
+            <diffuse>0.08 0.35 0.68 1</diffuse>
+          </material>
+        </visual>
+
+      </link>
+    </model>
+
+    <!-- ================================================= -->
+    <!-- OFFICE DOOR: BLUE FRAME AND GLASS-STYLE PANEL      -->
+    <!-- ================================================= -->
+    <model name="office_door">
+      <static>true</static>
+      <pose>0.0 2.25 1.0 0 0 0</pose>
+      <link name="door_link">
+
+        <collision name="door_collision">
+          <geometry>
+            <box><size>0.9 0.05 1.8</size></box>
+          </geometry>
+        </collision>
+        <visual name="door_visual">
+          <geometry>
+            <box><size>0.9 0.05 1.8</size></box>
+          </geometry>
+          <transparency>0.35</transparency>
+          <material>
+            <ambient>0.42 0.61 0.74 1</ambient>
+            <diffuse>0.55 0.74 0.86 1</diffuse>
+          </material>
+        </visual>
+
+        <!-- Door handle -->
+        <visual name="door_handle">
+          <pose>0.30 -0.04 0 0 0 0</pose>
+          <geometry>
+            <box><size>0.035 0.035 0.20</size></box>
+          </geometry>
+          <material>
+            <ambient>0.75 0.78 0.82 1</ambient>
+            <diffuse>0.85 0.88 0.92 1</diffuse>
+          </material>
+        </visual>
+
+        <!-- Blue side frame -->
+        <visual name="door_frame_left">
+          <pose>-0.48 0 0 0 0 0</pose>
+          <geometry>
+            <box><size>0.06 0.09 1.95</size></box>
+          </geometry>
+          <material>
+            <ambient>0.04 0.20 0.42 1</ambient>
+            <diffuse>0.08 0.35 0.68 1</diffuse>
+          </material>
+        </visual>
+
+        <visual name="door_frame_right">
+          <pose>0.48 0 0 0 0 0</pose>
+          <geometry>
+            <box><size>0.06 0.09 1.95</size></box>
+          </geometry>
+          <material>
+            <ambient>0.04 0.20 0.42 1</ambient>
+            <diffuse>0.08 0.35 0.68 1</diffuse>
+          </material>
+        </visual>
+
+      </link>
+    </model>
+
+    <!-- ORANGE TRAFFIC CONE -->
+    <model name="center_cone">
+      <static>true</static>
+      <pose>2 0 0.225 0 0 0</pose>
+      <link name="cone_link">
+
+        <!-- Collision shape for LiDAR and obstacle avoidance -->
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.45</length>
+            </cylinder>
+          </geometry>
+        </collision>
+
+        <!-- Tapered cone visual -->
+        <visual name="visual">
+          <geometry>
+            <cone>
+              <radius>0.15</radius>
+              <length>0.45</length>
+            </cone>
+          </geometry>
+          <material>
+            <ambient>1 0.25 0.02 1</ambient>
+            <diffuse>1 0.25 0.02 1</diffuse>
+          </material>
+        </visual>
+
+      </link>
+    </model>
+
+    <!-- ================================================= -->
+    <!-- MODERN OFFICE DESK WITH FOUR LEGS                 -->
+    <!-- ================================================= -->
+    <model name="office_workstation">
+      <static>true</static>
+      <pose>5 -2.2 0 0 0 0</pose>
+      <link name="desk_link">
+
+        <!-- Desktop -->
+        <collision name="desktop_collision">
+          <pose>0 0 0.72 0 0 0</pose>
+          <geometry>
+            <box><size>1.2 0.6 0.08</size></box>
+          </geometry>
+        </collision>
+        <visual name="desktop_visual">
+          <pose>0 0 0.72 0 0 0</pose>
+          <geometry>
+            <box><size>1.2 0.6 0.08</size></box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.29 0.34 1</ambient>
+            <diffuse>0.37 0.42 0.48 1</diffuse>
+          </material>
+        </visual>
+
+        <!-- Four desk legs -->
+        <collision name="leg1_collision">
+          <pose>-0.51 -0.22 0.35 0 0 0</pose>
+          <geometry><box><size>0.06 0.06 0.70</size></box></geometry>
+        </collision>
+        <visual name="leg1_visual">
+          <pose>-0.51 -0.22 0.35 0 0 0</pose>
+          <geometry><box><size>0.06 0.06 0.70</size></box></geometry>
+          <material>
+            <ambient>0.12 0.15 0.19 1</ambient>
+            <diffuse>0.20 0.24 0.29 1</diffuse>
+          </material>
+        </visual>
+
+        <collision name="leg2_collision">
+          <pose>-0.51 0.22 0.35 0 0 0</pose>
+          <geometry><box><size>0.06 0.06 0.70</size></box></geometry>
+        </collision>
+        <visual name="leg2_visual">
+          <pose>-0.51 0.22 0.35 0 0 0</pose>
+          <geometry><box><size>0.06 0.06 0.70</size></box></geometry>
+          <material>
+            <ambient>0.12 0.15 0.19 1</ambient>
+            <diffuse>0.20 0.24 0.29 1</diffuse>
+          </material>
+        </visual>
+
+        <collision name="leg3_collision">
+          <pose>0.51 -0.22 0.35 0 0 0</pose>
+          <geometry><box><size>0.06 0.06 0.70</size></box></geometry>
+        </collision>
+        <visual name="leg3_visual">
+          <pose>0.51 -0.22 0.35 0 0 0</pose>
+          <geometry><box><size>0.06 0.06 0.70</size></box></geometry>
+          <material>
+            <ambient>0.12 0.15 0.19 1</ambient>
+            <diffuse>0.20 0.24 0.29 1</diffuse>
+          </material>
+        </visual>
+
+        <collision name="leg4_collision">
+          <pose>0.51 0.22 0.35 0 0 0</pose>
+          <geometry><box><size>0.06 0.06 0.70</size></box></geometry>
+        </collision>
+        <visual name="leg4_visual">
+          <pose>0.51 0.22 0.35 0 0 0</pose>
+          <geometry><box><size>0.06 0.06 0.70</size></box></geometry>
+          <material>
+            <ambient>0.12 0.15 0.19 1</ambient>
+            <diffuse>0.20 0.24 0.29 1</diffuse>
+          </material>
+        </visual>
+
+        <!-- Monitor stand -->
+        <collision name="monitor_stand_collision">
+          <pose>0 0.10 0.80 0 0 0</pose>
+          <geometry><box><size>0.12 0.12 0.16</size></box></geometry>
+        </collision>
+        <visual name="monitor_stand_visual">
+          <pose>0 0.10 0.80 0 0 0</pose>
+          <geometry><box><size>0.12 0.12 0.16</size></box></geometry>
+          <material>
+            <ambient>0.12 0.14 0.16 1</ambient>
+            <diffuse>0.18 0.20 0.23 1</diffuse>
+          </material>
+        </visual>
+
+        <!-- Monitor screen -->
+        <collision name="monitor_collision">
+          <pose>0 0.10 1.02 0 0 0</pose>
+          <geometry><box><size>0.48 0.07 0.30</size></box></geometry>
+        </collision>
+        <visual name="monitor_visual">
+          <pose>0 0.10 1.02 0 0 0</pose>
+          <geometry><box><size>0.48 0.07 0.30</size></box></geometry>
+          <material>
+            <ambient>0.035 0.05 0.07 1</ambient>
+            <diffuse>0.07 0.10 0.14 1</diffuse>
+          </material>
+        </visual>
+
+        <!-- Keyboard -->
+        <collision name="keyboard_collision">
+          <pose>0 -0.16 0.775 0 0 0</pose>
+          <geometry><box><size>0.38 0.14 0.025</size></box></geometry>
+        </collision>
+        <visual name="keyboard_visual">
+          <pose>0 -0.16 0.775 0 0 0</pose>
+          <geometry><box><size>0.38 0.14 0.025</size></box></geometry>
+          <material>
+            <ambient>0.10 0.12 0.15 1</ambient>
+            <diffuse>0.16 0.19 0.23 1</diffuse>
+          </material>
+        </visual>
+
+      </link>
+    </model>
+
+    <!-- ================================================= -->
+    <!-- OFFICE CHAIR WITH SEAT, BACK, STEM AND BASE        -->
+    <!-- ================================================= -->
+    <model name="office_chair">
+      <static>true</static>
+      <pose>5 -1.43 0 0 0 0</pose>
+      <link name="chair_link">
+
+        <!-- Seat -->
+        <collision name="seat_collision">
+          <pose>0 0 0.48 0 0 0</pose>
+          <geometry><box><size>0.44 0.44 0.09</size></box></geometry>
+        </collision>
+        <visual name="seat_visual">
+          <pose>0 0 0.48 0 0 0</pose>
+          <geometry><box><size>0.44 0.44 0.09</size></box></geometry>
+          <material>
+            <ambient>0.04 0.20 0.40 1</ambient>
+            <diffuse>0.08 0.34 0.62 1</diffuse>
+          </material>
+        </visual>
+
+        <!-- Backrest -->
+        <collision name="back_collision">
+          <pose>0 0.18 0.78 0 0 0</pose>
+          <geometry><box><size>0.44 0.09 0.53</size></box></geometry>
+        </collision>
+        <visual name="back_visual">
+          <pose>0 0.18 0.78 0 0 0</pose>
+          <geometry><box><size>0.44 0.09 0.53</size></box></geometry>
+          <material>
+            <ambient>0.04 0.20 0.40 1</ambient>
+            <diffuse>0.08 0.34 0.62 1</diffuse>
+          </material>
+        </visual>
+
+        <!-- Central support -->
+        <collision name="stem_collision">
+          <pose>0 0 0.24 0 0 0</pose>
+          <geometry><cylinder><radius>0.045</radius><length>0.40</length></cylinder></geometry>
+        </collision>
+        <visual name="stem_visual">
+          <pose>0 0 0.24 0 0 0</pose>
+          <geometry><cylinder><radius>0.045</radius><length>0.40</length></cylinder></geometry>
+          <material>
+            <ambient>0.25 0.28 0.32 1</ambient>
+            <diffuse>0.38 0.41 0.45 1</diffuse>
+          </material>
+        </visual>
+
+        <!-- Five-spoke chair base -->
+        <visual name="base_front">
+          <pose>0 -0.18 0.06 0 0 0</pose>
+          <geometry><box><size>0.36 0.045 0.06</size></box></geometry>
+          <material>
+            <ambient>0.18 0.20 0.23 1</ambient>
+            <diffuse>0.28 0.31 0.35 1</diffuse>
+          </material>
+        </visual>
+        <visual name="base_back">
+          <pose>0 0.18 0.06 0 0 0</pose>
+          <geometry><box><size>0.36 0.045 0.06</size></box></geometry>
+          <material>
+            <ambient>0.18 0.20 0.23 1</ambient>
+            <diffuse>0.28 0.31 0.35 1</diffuse>
+          </material>
+        </visual>
+        <visual name="base_left">
+          <pose>-0.18 0 0.06 0 0 0</pose>
+          <geometry><box><size>0.045 0.36 0.06</size></box></geometry>
+          <material>
+            <ambient>0.18 0.20 0.23 1</ambient>
+            <diffuse>0.28 0.31 0.35 1</diffuse>
+          </material>
+        </visual>
+        <visual name="base_right">
+          <pose>0.18 0 0.06 0 0 0</pose>
+          <geometry><box><size>0.045 0.36 0.06</size></box></geometry>
+          <material>
+            <ambient>0.18 0.20 0.23 1</ambient>
+            <diffuse>0.28 0.31 0.35 1</diffuse>
+          </material>
+        </visual>
+
+      </link>
+    </model>
+
+    <!-- ================================================= -->
+    <!-- MODERN STORAGE CABINET WITH DRAWER FRONTS          -->
+    <!-- ================================================= -->
+    <model name="office_storage_cabinet">
+      <static>true</static>
+      <pose>8 2.25 0.60 0 0 0</pose>
+      <link name="cabinet_link">
+
+        <collision name="cabinet_collision">
+          <geometry><box><size>0.85 0.55 1.20</size></box></geometry>
+        </collision>
+        <visual name="cabinet_visual">
+          <geometry><box><size>0.85 0.55 1.20</size></box></geometry>
+          <material>
+            <ambient>0.30 0.34 0.39 1</ambient>
+            <diffuse>0.42 0.47 0.53 1</diffuse>
+          </material>
+        </visual>
+
+        <!-- Drawer fronts face toward the center of the hallway -->
+        <visual name="drawer_top">
+          <pose>0 -0.281 0.35 0 0 0</pose>
+          <geometry><box><size>0.72 0.025 0.25</size></box></geometry>
+          <material>
+            <ambient>0.04 0.20 0.42 1</ambient>
+            <diffuse>0.08 0.35 0.68 1</diffuse>
+          </material>
+        </visual>
+        <visual name="drawer_middle">
+          <pose>0 -0.281 0.05 0 0 0</pose>
+          <geometry><box><size>0.72 0.025 0.25</size></box></geometry>
+          <material>
+            <ambient>0.04 0.20 0.42 1</ambient>
+            <diffuse>0.08 0.35 0.68 1</diffuse>
+          </material>
+        </visual>
+        <visual name="drawer_bottom">
+          <pose>0 -0.281 -0.25 0 0 0</pose>
+          <geometry><box><size>0.72 0.025 0.25</size></box></geometry>
+          <material>
+            <ambient>0.04 0.20 0.42 1</ambient>
+            <diffuse>0.08 0.35 0.68 1</diffuse>
+          </material>
+        </visual>
+
+        <!-- Drawer handles -->
+        <visual name="handle_top">
+          <pose>0 -0.30 0.35 0 0 0</pose>
+          <geometry><box><size>0.18 0.025 0.025</size></box></geometry>
+          <material>
+            <ambient>0.78 0.81 0.85 1</ambient>
+            <diffuse>0.88 0.90 0.93 1</diffuse>
+          </material>
+        </visual>
+        <visual name="handle_middle">
+          <pose>0 -0.30 0.05 0 0 0</pose>
+          <geometry><box><size>0.18 0.025 0.025</size></box></geometry>
+          <material>
+            <ambient>0.78 0.81 0.85 1</ambient>
+            <diffuse>0.88 0.90 0.93 1</diffuse>
+          </material>
+        </visual>
+        <visual name="handle_bottom">
+          <pose>0 -0.30 -0.25 0 0 0</pose>
+          <geometry><box><size>0.18 0.025 0.025</size></box></geometry>
+          <material>
+            <ambient>0.78 0.81 0.85 1</ambient>
+            <diffuse>0.88 0.90 0.93 1</diffuse>
+          </material>
+        </visual>
+
+      </link>
+    </model>
+
+    <!-- ================================================= -->
+    <!-- OFFICE PLANT: POT AND MULTIPLE LEAVES              -->
+    <!-- ================================================= -->
+    <model name="office_plant">
+      <static>true</static>
+      <pose>5 2.30 0 0 0 0</pose>
+      <link name="plant_link">
+
+        <!-- Pot -->
+        <collision name="pot_collision">
+          <pose>0 0 0.18 0 0 0</pose>
+          <geometry><cylinder><radius>0.15</radius><length>0.36</length></cylinder></geometry>
+        </collision>
+        <visual name="pot_visual">
+          <pose>0 0 0.18 0 0 0</pose>
+          <geometry><cylinder><radius>0.15</radius><length>0.36</length></cylinder></geometry>
+          <material>
+            <ambient>0.25 0.28 0.32 1</ambient>
+            <diffuse>0.35 0.39 0.44 1</diffuse>
+          </material>
+        </visual>
+
+        <!-- Main foliage -->
+        <collision name="foliage_collision">
+          <pose>0 0 0.68 0 0 0</pose>
+          <geometry><sphere><radius>0.25</radius></sphere></geometry>
+        </collision>
+        <visual name="foliage_center">
+          <pose>0 0 0.68 0 0 0</pose>
+          <geometry><sphere><radius>0.25</radius></sphere></geometry>
+          <material>
+            <ambient>0.10 0.32 0.16 1</ambient>
+            <diffuse>0.16 0.48 0.22 1</diffuse>
+          </material>
+        </visual>
+
+        <!-- Additional leaf clusters -->
+        <visual name="leaf_left">
+          <pose>-0.16 0 0.78 0 0 0</pose>
+          <geometry><sphere><radius>0.16</radius></sphere></geometry>
+          <material>
+            <ambient>0.08 0.27 0.12 1</ambient>
+            <diffuse>0.12 0.40 0.18 1</diffuse>
+          </material>
+        </visual>
+        <visual name="leaf_right">
+          <pose>0.16 0.02 0.82 0 0 0</pose>
+          <geometry><sphere><radius>0.17</radius></sphere></geometry>
+          <material>
+            <ambient>0.10 0.34 0.14 1</ambient>
+            <diffuse>0.18 0.50 0.22 1</diffuse>
+          </material>
+        </visual>
+        <visual name="leaf_top">
+          <pose>0 0 0.98 0 0 0</pose>
+          <geometry><sphere><radius>0.15</radius></sphere></geometry>
+          <material>
+            <ambient>0.12 0.38 0.16 1</ambient>
+            <diffuse>0.20 0.56 0.25 1</diffuse>
+          </material>
+        </visual>
+
+      </link>
+    </model>
+
+    <!-- ================================================= -->
+    <!-- TRASH / RECYCLING BIN                              -->
+    <!-- ================================================= -->
+    <model name="recycling_bin">
+      <static>true</static>
+      <pose>8 -2.3 0.3 0 0 0</pose>
+      <link name="bin_link">
+        <collision name="bin_collision">
+          <geometry><box><size>0.42 0.42 0.60</size></box></geometry>
+        </collision>
+        <visual name="bin_visual">
+          <geometry><box><size>0.42 0.42 0.60</size></box></geometry>
+          <material>
+            <ambient>0.12 0.15 0.19 1</ambient>
+            <diffuse>0.20 0.24 0.29 1</diffuse>
+          </material>
+        </visual>
+
+        <!-- Blue recycling lid -->
+        <visual name="bin_lid">
+          <pose>0 0 0.31 0 0 0</pose>
+          <geometry><box><size>0.45 0.45 0.05</size></box></geometry>
+          <material>
+            <ambient>0.04 0.20 0.42 1</ambient>
+            <diffuse>0.08 0.35 0.68 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- ================================================= -->
+    <!-- WALL-MOUNTED SECURITY CAMERA                       -->
+    <!-- Decorative model; no camera sensor is attached     -->
+    <!-- ================================================= -->
+    <model name="security_camera">
+      <static>true</static>
+      <pose>1.5 2.72 2.05 0 0 0</pose>
+      <link name="camera_link">
+
+        <visual name="camera_mount">
+          <pose>0 0.04 0.06 0 0 0</pose>
+          <geometry><box><size>0.12 0.12 0.12</size></box></geometry>
+          <material>
+            <ambient>0.12 0.15 0.19 1</ambient>
+            <diffuse>0.20 0.24 0.29 1</diffuse>
+          </material>
+        </visual>
+
+        <visual name="camera_body">
+          <pose>0 -0.04 0 0 0 0</pose>
+          <geometry><box><size>0.22 0.16 0.14</size></box></geometry>
+          <material>
+            <ambient>0.12 0.15 0.19 1</ambient>
+            <diffuse>0.20 0.24 0.29 1</diffuse>
+          </material>
+        </visual>
+
+        <visual name="camera_lens">
+          <pose>0 -0.13 0 0 0 0</pose>
+          <geometry><cylinder><radius>0.045</radius><length>0.025</length></cylinder></geometry>
+          <material>
+            <ambient>0.02 0.03 0.05 1</ambient>
+            <diffuse>0.04 0.06 0.09 1</diffuse>
+          </material>
+        </visual>
+
+      </link>
+    </model>
+
+    <!-- ================================================= -->
+    <!-- LIGHTING                                          -->
+    <!-- ================================================= -->
+    <light name="hallway_light" type="directional">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 5 0 0 0</pose>
+      <direction>-0.5 0.2 -1</direction>
+      <diffuse>0.92 0.94 1.0 1</diffuse>
+      <specular>0.35 0.38 0.45 1</specular>
+    </light>
+
+  </world>
+</sdf>
